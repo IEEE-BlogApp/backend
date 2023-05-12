@@ -22,12 +22,12 @@ export const login = async (req, res, next) => {
   }
 };
 
-export const register = async (req, res,next) => {
+export const register = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
 
-    let user = await User.findOne({ email })
-    
+    let user = await User.findOne({ email });
+
     if (user) return next(new ErrorHandler("User Already Exist", 400));
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -48,20 +48,19 @@ export const getMyProfile = (req, res) => {
 };
 
 export const logout = (req, res) => {
-  try{
-  res
-    .status(200)
-    .cookie("token", "", {
-      expires: new Date(Date.now()),
-      sameSite: process.env.NODE_ENV === "Develpoment" ? "lax" : "none",
-      secure: process.env.NODE_ENV === "Develpoment" ? false : true,
-    })
-    .json({
-      success: true,
-      message:"logged out successfully"
-    });}
-    catch(error){
-      next(error)
-    }
+  try {
+    res
+      .status(200)
+      .cookie("token", "", {
+        expires: new Date(Date.now()),
+        sameSite: process.env.NODE_ENV === "Develpoment" ? "lax" : "none",
+        secure: process.env.NODE_ENV === "Develpoment" ? false : true,
+      })
+      .json({
+        success: true,
+        message: "logged out successfully",
+      });
+  } catch (error) {
+    next(error);
+  }
 };
-  

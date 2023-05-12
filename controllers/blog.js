@@ -4,12 +4,13 @@ import ErrorHandler from "../middlewares/error.js";
 
 export const newPost = async (req, res, next) => {
   try {
-    const { title, description } = req.body;
+    const { title, description,comments } = req.body;
     const blog = await Blog.create({
       title,
-      description,
+      description, 
+      creator:req.user._id,
+      comments
     });
-    console.log(blog);
     res.status(201).json({
       success: true,
       message: "blog added successfully",
@@ -22,7 +23,6 @@ export const newPost = async (req, res, next) => {
 export const getPost = async (req, res, next) => {
   try {
     const blogs = await Blog.find();
-    console.log(blogs);
     res.status(200).json({
       success: true,
       blogs: blogs,
@@ -39,7 +39,6 @@ export const updatePost =async (req, res, next) =>{
       title,
       description,
     });
-    console.log(blog);
     res.status(200).json({
       success: true,
       message: "blog updated successfully",
@@ -52,7 +51,6 @@ export const updatePost =async (req, res, next) =>{
 export const deletePost = async (req, res, next) => {
   try {
     const blog = await Blog.findByIdAndDelete(req.params.id);
-    console.log(blog);
     res.status(200).json({
       success: true,
       message: "blog deleted successfully",
