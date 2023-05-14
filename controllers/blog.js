@@ -32,6 +32,18 @@ export const getPost = async (req, res, next) => {
   }
 };
 
+export const getPostById = async (req, res, next) => {
+  try {
+    const blog = await Blog.findById(req.params.id);
+    res.status(200).json({
+      success: true,
+      blog: blog,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
 export const updatePost =async (req, res, next) =>{
   try {
     const { title, description } = req.body;
@@ -42,6 +54,30 @@ export const updatePost =async (req, res, next) =>{
     res.status(200).json({
       success: true,
       message: "blog updated successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export const addComment=async (req, res,next) => {
+  try {
+    // const blog = await Blog.findByIdAndUpdate(req.params.id, {
+    //   $push: {
+    //     comment: req.body,
+    //     commentorId:req.user._id
+    //   },
+    // });
+
+    const blog=await Blog.findById(req.params.id);
+    const{comment}=req.body
+    blog.comments.push({commentorId:req.user._id, comment:comment});
+    await blog.save();    
+
+    console.log(blog)
+    res.status(200).json({
+      success: true,
+      message: "comment added successfully",
     });
   } catch (error) {
     next(error);

@@ -40,14 +40,34 @@ export const register = async (req, res, next) => {
   }
 };
 
-export const getMyProfile = (req, res) => {
+export const getMyProfile = (req, res,next) => {
+
+  try{
   res.status(200).json({
     success: true,
     user: req.user,
-  });
+  });}
+  catch(error){
+      next(error);
+    }
 };
 
-export const logout = (req, res) => {
+export const getUserById = async (req, res,next) => {
+  try {
+    const id = req.params.id;
+
+    const user = await User.findById(id);
+
+    res.status(200).json({
+      success: true,
+      user: user,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const logout = (req, res,next) => {
   try {
     res
       .status(200)

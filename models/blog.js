@@ -14,11 +14,21 @@ const schema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  comments:[
+  comments: [
     {
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: "User"
-    }
+      commentorId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+      comment: {
+        type: String,
+        required: true,
+      },
+    },
+    // {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "User"
+    // }
   ],
 });
 
